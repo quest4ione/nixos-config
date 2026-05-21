@@ -12,7 +12,7 @@
     boot.loader.systemd-boot.enable = true;
     boot.loader.efi.canTouchEfiVariables = true;
 
-    networking.hostName = "quest-laptop";
+    networking.hostName = "hp-pavilion";
     networking.networkmanager.enable = true;
 
     hardware.bluetooth.enable = true;
