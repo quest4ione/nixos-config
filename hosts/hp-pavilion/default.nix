@@ -110,11 +110,11 @@
         # wayland
         wl-clipboard
         # hyperland
-        hyprpolkitagent
-        hyprland-qt-support
+        pkgs-unstable.hyprpolkitagent
+        pkgs-unstable.hyprland-qt-support
         pkgs-unstable.hyprlauncher
-        xdg-desktop-portal-hyprland
-        hyprnotify
+        pkgs-unstable.xdg-desktop-portal-hyprland
+        pkgs-unstable.hyprnotify
         pkgs-unstable.hyprshutdown
         # i/o stuffs
         playerctl
