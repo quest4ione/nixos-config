@@ -94,6 +94,9 @@
     programs.gamescope.enable = true;
     programs.steam = {
       enable = true;
+      extraCompatPackages = [
+        pkgs.proton-ge-bin
+      ];
     };
     programs.firefox.enable = true;
     programs.thunderbird.enable = true;
