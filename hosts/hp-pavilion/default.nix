@@ -142,6 +142,7 @@
         osu-lazer-bin
         libreoffice
         numbat
+        aseprite
       ];
     };
 
