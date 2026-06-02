@@ -1,165 +1,149 @@
-{ config, pkgs, inputs, ... }: (
-  let
-    pkgs-unstable = inputs.nixpkgs-unstable.legacyPackages.${config.nixpkgs.hostPlatform.system};
-  in {
-    imports = [
-      ./hardware-configuration.nix
-      inputs.home-manager.nixosModules.home-manager {
-        home-manager.useGlobalPkgs = true;
-        home-manager.useUserPackages = true;
-        home-manager.extraSpecialArgs = { inherit inputs; };
-        home-manager.users = {
-          quest = ../../homes/quest.nix;
-        };
-      }
+{ config, pkgs, inputs, ... }: {
+  imports = [
+    ./hardware-configuration.nix
+    inputs.home-manager.nixosModules.home-manager {
+      home-manager.useGlobalPkgs = true;
+      home-manager.useUserPackages = true;
+      home-manager.extraSpecialArgs = { inherit inputs; };
+      home-manager.users = {
+        quest = ../../homes/quest.nix;
+      };
+    }
+  ];
+
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nixpkgs.config.allowUnfree = true;
+
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+
+  networking.hostName = "hp-pavilion";
+  networking.networkmanager.enable = true;
+
+  hardware.bluetooth.enable = true;
+  hardware.enableAllFirmware = true;
+
+  time.timeZone = "Europe/Amsterdam";
+
+  i18n.defaultLocale = "en_US.UTF-8";
+
+  i18n.extraLocaleSettings = {
+    LC_MEASUREMENT = "nl_NL.UTF-8";
+    LC_TIME = "nl_NL.UTF-8";
+  };
+
+  fonts = {
+    packages = with pkgs; [
+      nerd-fonts.iosevka-term
     ];
+  };
 
-    nix.settings.experimental-features = [ "nix-command" "flakes" ];
-    nixpkgs.config.allowUnfree = true;
+  services.displayManager.ly.enable = true;
 
-    boot.loader.systemd-boot.enable = true;
-    boot.loader.efi.canTouchEfiVariables = true;
+  programs.hyprland = {
+    enable = true;
+  };
 
-    networking.hostName = "hp-pavilion";
-    networking.networkmanager.enable = true;
+  # audio
+  security.rtkit.enable = true; # used by pipewire
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+  };
 
-    hardware.bluetooth.enable = true;
-    hardware.enableAllFirmware = true;
+  # search.nixos.org says this is disabled by default...
+  services.power-profiles-daemon.enable = false;
 
-    time.timeZone = "Europe/Amsterdam";
-
-    i18n.defaultLocale = "en_US.UTF-8";
-
-    i18n.extraLocaleSettings = {
-      LC_MEASUREMENT = "nl_NL.UTF-8";
-      LC_TIME = "nl_NL.UTF-8";
+  # my laptop crashes a lot otherwise, not sure if this is the best fix :p
+  services.auto-cpufreq.enable = true;
+  services.auto-cpufreq.settings = {
+    battery = {
+      turbo = "never";
     };
-
-    fonts = {
-      packages = with pkgs; [
-        nerd-fonts.iosevka-term
-      ];
+    charger = {
+      turbo = "never";
     };
+  };
 
-    programs.hyprland = {
-      enable = true;
-      package = pkgs-unstable.hyprland;
-    };
-    system.nixos.tags = [ "with-hyprland-latest" ];
+  services.flatpak.enable = true;
 
-    # TODO: am i using this?
-    # You can disable this if you're only using the Wayland session.
-    services.xserver.enable = true;
-    services.xserver.xkb = {
-      layout = "us";
-      variant = "";
-    };
-
-
-    services.displayManager.ly.enable = true;
-    # services.displayManager.sddm.enable = true;
-    # services.desktopManager.plasma6.enable = true;
-
-    # services.printing.enable = true;
-
-    security.rtkit.enable = true; # used by pipewire
-    services.pipewire = {
-      enable = true;
-      alsa.enable = true;
-      alsa.support32Bit = true;
-      pulse.enable = true;
-    };
-
-    # search.nixos.org says this is disabled by default...
-    services.power-profiles-daemon.enable = false;
-
-    services.auto-cpufreq.enable = true;
-    services.auto-cpufreq.settings = {
-      battery = {
-        turbo = "never";
-      };
-      charger = {
-        turbo = "never";
-      };
-    };
-
-    services.flatpak.enable = true;
-
-    services.keyd = {
-      enable = true;
-      keyboards = {
-        default = {
-          ids = [ "*" ];
-          settings = {
-            main = {
-              capslock = "esc";
-            };
+  services.keyd = {
+    enable = true;
+    keyboards = {
+      default = {
+        ids = [ "*" ];
+        settings = {
+          main = {
+            capslock = "esc";
           };
         };
       };
     };
+  };
 
-    programs.gamescope.enable = true;
-    programs.steam = {
-      enable = true;
-      extraCompatPackages = [
-        pkgs.proton-ge-bin
-      ];
+  programs.gamescope.enable = true;
+  programs.steam = {
+    enable = true;
+    extraCompatPackages = [
+      pkgs.proton-ge-bin
+    ];
+  };
+
+  programs.firefox.enable = true;
+  programs.thunderbird.enable = true;
+
+  programs.waybar.enable = true;
+
+  environment = {
+    systemPackages = with pkgs; [
+      # required apps for system usage
+      wget
+      helix
+      git
+      alacritty
+      # wayland
+      wl-clipboard
+      # hyperland
+      pkgs.hyprpolkitagent
+      pkgs.hyprland-qt-support
+      pkgs.hyprlauncher
+      pkgs.xdg-desktop-portal-hyprland
+      pkgs.hyprnotify
+      pkgs.hyprshutdown
+      # i/o stuffs
+      playerctl
+      bluetui
+      wiremix
+      # notifs
+      libnotify
+    ];
+    variables = {
+      VISUAL = "hx";
     };
-    programs.firefox.enable = true;
-    programs.thunderbird.enable = true;
+  };
 
-    programs.waybar.enable = true;
+  users.users.quest = {
+    isNormalUser = true;
+    description = "quest";
+    extraGroups = [ "networkmanager" "wheel" ];
+    packages = with pkgs; [
+      discord
+      spotify-player
+      prismlauncher
+      osu-lazer-bin
+      libreoffice
+      numbat
+      aseprite
+    ];
+  };
 
-    environment = {
-      systemPackages = with pkgs; [
-        # required apps for system usage
-        wget
-        helix
-        git
-        alacritty
-        # wayland
-        wl-clipboard
-        # hyperland
-        pkgs-unstable.hyprpolkitagent
-        pkgs-unstable.hyprland-qt-support
-        pkgs-unstable.hyprlauncher
-        pkgs-unstable.xdg-desktop-portal-hyprland
-        pkgs-unstable.hyprnotify
-        pkgs-unstable.hyprshutdown
-        # i/o stuffs
-        playerctl
-        bluetui
-        wiremix
-        # notifs
-        libnotify
-      ];
-      variables = {
-        VISUAL = "hx";
-      };
-    };
-
-    users.users.quest = {
-      isNormalUser = true;
-      description = "quest";
-      extraGroups = [ "networkmanager" "wheel" ];
-      packages = with pkgs; [
-        discord
-        spotify-player
-        prismlauncher
-        osu-lazer-bin
-        libreoffice
-        numbat
-        aseprite
-      ];
-    };
-
-    # This value determines the NixOS release from which the default
-    # settings for stateful data, like file locations and database versions
-    # on your system were taken. It‘s perfectly fine and recommended to leave
-    # this value at the release version of the first install of this system.
-    # Before changing this value read the documentation for this option
-    # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-    system.stateVersion = "25.11"; # Did you read the comment?
-  }
-)
+  # This value determines the NixOS release from which the default
+  # settings for stateful data, like file locations and database versions
+  # on your system were taken. It‘s perfectly fine and recommended to leave
+  # this value at the release version of the first install of this system.
+  # Before changing this value read the documentation for this option
+  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
+  system.stateVersion = "25.11"; # Did you read the comment?
+}
