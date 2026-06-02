@@ -6,7 +6,18 @@
 
   programs = {
     home-manager.enable = true;
+    thunderbird.enable = true;
   };
+
+  home.packages = with pkgs; [
+    discord
+    spotify-player
+    prismlauncher
+    osu-lazer-bin
+    libreoffice
+    numbat
+    aseprite
+  ];
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage

@@ -92,7 +92,6 @@
   };
 
   programs.firefox.enable = true;
-  programs.thunderbird.enable = true;
 
   programs.waybar.enable = true;
 
@@ -128,15 +127,6 @@
     isNormalUser = true;
     description = "quest";
     extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [
-      discord
-      spotify-player
-      prismlauncher
-      osu-lazer-bin
-      libreoffice
-      numbat
-      aseprite
-    ];
   };
 
   # This value determines the NixOS release from which the default
