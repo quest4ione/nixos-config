@@ -2,6 +2,7 @@
   flake.nixosModules.hpPavilionConfiguration = { pkgs, lib, ... }: {
     imports = [
       self.nixosModules.hpPavilionHardware
+      self.nixosModules.grub
       inputs.home-manager.nixosModules.home-manager {
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
@@ -14,9 +15,6 @@
 
     nix.settings.experimental-features = [ "nix-command" "flakes" ];
     nixpkgs.config.allowUnfree = true;
-
-    boot.loader.systemd-boot.enable = true;
-    boot.loader.efi.canTouchEfiVariables = true;
 
     networking.hostName = "hp-pavilion";
     networking.networkmanager.enable = true;
