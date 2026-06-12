@@ -1,5 +1,5 @@
 { self, inputs, ... }: {
-  flake.homeModules.questConfiguration =  { pkgs, ... }: {
+  flake.homeModules.questConfiguration = { pkgs, ... }: {
     home = {
       username = "quest";
       homeDirectory = "/home/quest";

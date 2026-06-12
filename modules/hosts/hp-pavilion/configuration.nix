@@ -3,6 +3,12 @@
     imports = [
       self.nixosModules.hpPavilionHardware
       self.nixosModules.grub
+      self.nixosModules.steam
+      self.nixosModules.locale
+      self.nixosModules.hyprland
+      self.nixosModules.capsEsc
+      self.nixosModules.helix
+
       inputs.home-manager.nixosModules.home-manager {
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
@@ -13,23 +19,19 @@
       }
     ];
 
+    networking.hostName = "hp-pavilion";
     nix.settings.experimental-features = [ "nix-command" "flakes" ];
     nixpkgs.config.allowUnfree = true;
 
-    networking.hostName = "hp-pavilion";
+    users.users.quest = {
+      isNormalUser = true;
+      extraGroups = [ "wheel" ];
+    };
+
     networking.networkmanager.enable = true;
 
     hardware.bluetooth.enable = true;
     hardware.enableAllFirmware = true;
-
-    time.timeZone = "Europe/Amsterdam";
-
-    i18n.defaultLocale = "en_US.UTF-8";
-
-    i18n.extraLocaleSettings = {
-      LC_MEASUREMENT = "nl_NL.UTF-8";
-      LC_TIME = "nl_NL.UTF-8";
-    };
 
     fonts = {
       packages = with pkgs; [
@@ -38,10 +40,6 @@
     };
 
     services.displayManager.ly.enable = true;
-
-    programs.hyprland = {
-      enable = true;
-    };
 
     # audio
     security.rtkit.enable = true; # used by pipewire
@@ -68,64 +66,22 @@
 
     services.flatpak.enable = true;
 
-    services.keyd = {
-      enable = true;
-      keyboards = {
-        default = {
-          ids = [ "*" ];
-          settings = {
-            main = {
-              capslock = "esc";
-            };
-          };
-        };
-      };
-    };
-
-    programs.gamescope.enable = true;
-    programs.steam = {
-      enable = true;
-      extraCompatPackages = [
-        pkgs.proton-ge-bin
-      ];
-    };
-
     programs.firefox.enable = true;
-
-    programs.waybar.enable = true;
 
     environment = {
       systemPackages = with pkgs; [
         # required apps for system usage
         wget
-        helix
         git
         alacritty
-        # wayland
-        wl-clipboard
-        # hyperland
-        pkgs.hyprpolkitagent
-        pkgs.hyprland-qt-support
-        pkgs.hyprlauncher
-        pkgs.xdg-desktop-portal-hyprland
-        pkgs.hyprnotify
-        pkgs.hyprshutdown
         # i/o stuffs
         playerctl
         bluetui
         wiremix
-        # notifs
-        libnotify
       ];
       variables = {
         VISUAL = "hx";
       };
-    };
-
-    users.users.quest = {
-      isNormalUser = true;
-      description = "quest";
-      extraGroups = [ "networkmanager" "wheel" ];
     };
 
     # This value determines the NixOS release from which the default
