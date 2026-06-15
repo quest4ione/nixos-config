@@ -8,6 +8,7 @@
       self.nixosModules.hyprland
       self.nixosModules.capsEsc
       self.nixosModules.helix
+      self.nixosModules.printing
 
       inputs.home-manager.nixosModules.home-manager {
         home-manager.useGlobalPkgs = true;
