@@ -2,7 +2,6 @@
   flake.nixosModules.hyprland = { pkgs, ...}: {
     programs = {
       hyprland.enable = true;
-      waybar.enable = true;
     };
 
     environment.systemPackages = [
