@@ -22,6 +22,8 @@
       }
     ];
 
+    services.desktopManager.plasma6.enable = true;
+
     networking.hostName = "hp-pavilion";
     nix.settings.experimental-features = [ "nix-command" "flakes" ];
     nixpkgs.config.allowUnfree = true;
