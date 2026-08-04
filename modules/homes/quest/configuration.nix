@@ -9,6 +9,7 @@
     programs = {
       home-manager.enable = true;
       thunderbird.enable = true;
+      vscode.enable = true;
     };
 
     home.packages = with pkgs; [
