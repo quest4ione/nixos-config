@@ -9,6 +9,7 @@
       self.nixosModules.capsEsc
       self.nixosModules.helix
       self.nixosModules.printing
+      self.nixosModules.docker
 
       self.nixosModules.niri
 
@@ -30,7 +31,7 @@
 
     users.users.quest = {
       isNormalUser = true;
-      extraGroups = [ "wheel" ];
+      extraGroups = [ "wheel" "docker" ]; # todo: maybe put this near the docker config
     };
 
     networking.networkmanager.enable = true;
