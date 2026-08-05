@@ -1,5 +1,5 @@
-top@{ config, lib, inputs, ... }: {
-  perSystem = { config, pkgs, ... }: {
+{ lib, inputs, ... }: {
+  perSystem = { self', pkgs, ... }: {
     packages.alacritty = inputs.wrapper-modules.wrappers.alacritty.wrap {
       inherit pkgs;
 
@@ -9,7 +9,7 @@ top@{ config, lib, inputs, ... }: {
         };
 
         terminal = {
-          shell = { program = lib.getExe config.packages.zellij; };
+          shell = { program = lib.getExe self'.packages.zellij; };
         };
       };
     };

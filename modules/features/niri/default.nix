@@ -1,15 +1,17 @@
-{ self, inputs, ... }: {
-  flake.nixosModules.niri = { pkgs, ... }: {
-    programs.niri = {
-      enable = true;
-      package = self.packages.${pkgs.stdenv.hostPlatform.system}.niri;
-    };
+{ lib, moduleWithSystem, inputs, ... }: {
+  flake.nixosModules.niri = moduleWithSystem ({ self', ... }:
+    { ... }: {
+      programs.niri = {
+        enable = true;
+        package = self'.packages.niri;
+      };
 
-    # TODO: add as a dep to noctalia-shell
-    services.upower.enable = true;
-  };
+      # TODO: add as a dep to noctalia-shell
+      services.upower.enable = true;
+    }
+  );
 
-  perSystem = { self', pkgs, lib, ... }: {
+  perSystem = { self', pkgs, ... }: {
     packages.niri = inputs.wrapper-modules.wrappers.niri.wrap (
       let
           qs = lib.getExe pkgs.noctalia-qs;

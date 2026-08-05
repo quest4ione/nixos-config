@@ -1,4 +1,4 @@
-{ self, inputs, ... }: {
+{ ... }: {
   flake.nixosModules.capsEsc = { ... }: {
     services.keyd = {
       enable = true;

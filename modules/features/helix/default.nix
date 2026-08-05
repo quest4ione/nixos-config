@@ -1,5 +1,5 @@
-{ self, inputs, config, ... }: {
-  perSystem = { pkgs, lib, ... }: {
+{ moduleWithSystem, inputs, ... }: {
+  perSystem = { pkgs, ... }: {
     packages.helix = inputs.wrapper-modules.wrappers.helix.wrap {
       inherit pkgs;
 
@@ -31,17 +31,19 @@
   };
 
   flake = {
-    homeModules.helix = { pkgs, lib, ... }: {
-      programs.helix = {
-        enable = true;
-        package = config.flake.packages.${pkgs.stdenv.hostPlatform.system}.helix;
-      };
-    };
+    homeModules.helix = moduleWithSystem ({ self', ... }:
+      { ... }: {
+        programs.helix = {
+          enable = true;
+          package = self'.packages.helix;
+        };
+      }
+    );
 
-    nixosModules.helix = { pkgs, lib, ... }: {
-      environment.systemPackages = [
-        config.flake.packages.${pkgs.stdenv.hostPlatform.system}.helix
-      ];
-    };
+    nixosModules.helix = moduleWithSystem ({ self', ... }:
+      { ... }: {
+        environment.systemPackages = [ self'.packages.helix ];
+      }
+    );
   };
 }

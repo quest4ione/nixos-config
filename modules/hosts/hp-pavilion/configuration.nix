@@ -1,5 +1,5 @@
 { self, inputs, ... }: {
-  flake.nixosModules.hpPavilionConfiguration = { pkgs, lib, ... }: {
+  flake.nixosModules.hpPavilionConfiguration = { pkgs, ... }: {
     imports = [
       self.nixosModules.hpPavilionHardware
       self.nixosModules.grub
@@ -41,8 +41,8 @@
     hardware.enableAllFirmware = true;
 
     fonts = {
-      packages = with pkgs; [
-        nerd-fonts.iosevka-term
+      packages = [
+        pkgs.nerd-fonts.iosevka-term
       ];
     };
 
@@ -76,15 +76,15 @@
     programs.firefox.enable = true;
 
     environment = {
-      systemPackages = with pkgs; [
+      systemPackages = [
         # required apps for system usage
-        wget
-        git
-        alacritty
+        pkgs.wget
+        pkgs.git
+        pkgs.alacritty
         # i/o stuffs
-        playerctl
-        bluetui
-        wiremix
+        pkgs.playerctl
+        pkgs.bluetui
+        pkgs.wiremix
       ];
       variables = {
         VISUAL = "hx";

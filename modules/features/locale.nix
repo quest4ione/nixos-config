@@ -1,4 +1,4 @@
-{ self, inputs, ... }: {
+{ ... }: {
   flake.nixosModules.locale = { ... }: {
     time.timeZone = "Europe/Amsterdam";
 

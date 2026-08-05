@@ -1,4 +1,4 @@
-{ self, inputs, ... }: {
+{ self, ... }: {
   flake.homeModules.questConfiguration = { pkgs, ... }: {
     imports = [
       self.homeModules.helix
@@ -17,15 +17,15 @@
       vscode.enable = true;
     };
 
-    home.packages = with pkgs; [
-      discord
-      spotify-player
-      prismlauncher
-      osu-lazer-bin
-      libreoffice
-      numbat
-      aseprite
-      unzip
+    home.packages = [
+      pkgs.discord
+      pkgs.spotify-player
+      pkgs.prismlauncher
+      pkgs.osu-lazer-bin
+      pkgs.libreoffice
+      pkgs.numbat
+      pkgs.aseprite
+      pkgs.unzip
     ];
   };
 }

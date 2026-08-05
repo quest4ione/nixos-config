@@ -1,5 +1,5 @@
-{ self, inputs, ... }: {
-  flake.nixosModules.docker = { pkgs, lib, ... }: {
+{ ... }: {
+  flake.nixosModules.docker = { ... }: {
     virtualisation.docker.enable = true;
   };
 }

@@ -1,4 +1,4 @@
-{ self, inputs, ... }: {
+{ ... }: {
   flake.nixosModules.printing = { pkgs, ... }: {
     services.avahi = {
       enable = true;
@@ -8,9 +8,10 @@
 
     services.printing = {
       enable = true;
-      drivers = with pkgs; [
-        cups-filters
-        cups-browsed
+      drivers = [
+        pkgs.cups-filters
+        pkgs.cups-browsed
       ];
-    };  };
+    };
+  };
 }
