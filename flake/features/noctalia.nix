@@ -4,4 +4,8 @@
       inherit pkgs;
     };
   };
+
+  flake.nixosModules.noctalia-shell = { ... }: {
+    services.upower.enable = true;
+  };
 }

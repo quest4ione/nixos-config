@@ -5,9 +5,6 @@
         enable = true;
         package = self'.packages.niri;
       };
-
-      # TODO: add as a dep to noctalia-shell
-      services.upower.enable = true;
     }
   );
 

@@ -13,6 +13,7 @@
       self.nixosModules.nix-ld
 
       self.nixosModules.niri
+      self.nixosModules.noctalia-shell
 
       inputs.home-manager.nixosModules.home-manager {
         home-manager.useGlobalPkgs = true;
