@@ -1,27 +1,21 @@
 { self, ... }: {
   flake.homeModules.questConfiguration = { pkgs, ... }: {
-    imports = [
-      self.homeModules.helix
-      self.homeModules.zellij
-    ];
-
     home = {
       username = "quest";
       homeDirectory = "/home/quest";
       stateVersion = "26.05";
     };
 
-    programs = {
-      home-manager.enable = true;
-      vscode.enable = true;
-    };
+    imports = [
+      self.homeModules.common
 
-    home.packages = [
-      pkgs.discord
-      pkgs.prismlauncher
-      pkgs.osu-lazer-bin
-      pkgs.libreoffice
-      pkgs.unzip
+      self.homeModules.helix
+      self.homeModules.zellij
+      self.homeModules.discord
+      self.homeModules.prism-launcher
+      self.homeModules.osu-lazer
+      self.homeModules.libre-office
+      self.homeModules.vscode
     ];
   };
 }

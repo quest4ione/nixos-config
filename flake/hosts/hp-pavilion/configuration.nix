@@ -1,16 +1,27 @@
 { self, inputs, ... }: {
   flake.nixosModules.hpPavilionConfiguration = { pkgs, ... }: {
+    networking.hostName = "hp-pavilion";
+    system.stateVersion = "25.11";
+
+    nixpkgs.config.allowUnfree = true;
+
+    environment.variables = {
+      EDITOR = "hx";
+      VISUAL = "hx";
+    };
+
     imports = [
-      self.nixosModules.hpPavilionHardware
-      self.nixosModules.grub
-      self.nixosModules.steam
+      self.nixosModules.common
       self.nixosModules.locale
-      self.nixosModules.capsEsc
-      self.nixosModules.helix
+
+      self.nixosModules.network-manager
+      self.nixosModules.pipewire
+      self.nixosModules.bluetooth
       self.nixosModules.printing
-      self.nixosModules.docker
       self.nixosModules.nix-ld
 
+      self.nixosModules.grub
+      self.nixosModules.ly
       self.nixosModules.niri
       self.nixosModules.noctalia-shell
 
@@ -22,79 +33,15 @@
           quest = self.homeModules.questConfiguration;
         };
       }
+
+      self.nixosModules.capsEsc
+
+      self.nixosModules.docker
+      self.nixosModules.flatpak
+
+      self.nixosModules.firefox
+      self.nixosModules.steam
+      self.nixosModules.helix
     ];
-
-    networking.hostName = "hp-pavilion";
-    nix.settings.experimental-features = [ "nix-command" "flakes" ];
-    nixpkgs.config.allowUnfree = true;
-
-    users.users.quest = {
-      isNormalUser = true;
-      extraGroups = [ "wheel" "docker" ]; # todo: maybe put this near the docker config
-    };
-
-    networking.networkmanager.enable = true;
-
-    hardware.bluetooth.enable = true;
-    hardware.enableAllFirmware = true;
-
-    fonts = {
-      packages = [
-        pkgs.nerd-fonts.iosevka-term
-      ];
-    };
-
-    services.displayManager.ly.enable = true;
-
-    # audio
-    security.rtkit.enable = true; # used by pipewire
-    services.pipewire = {
-      enable = true;
-      alsa.enable = true;
-      alsa.support32Bit = true;
-      pulse.enable = true;
-    };
-
-    # search.nixos.org says this is disabled by default...
-    services.power-profiles-daemon.enable = false;
-
-    # my laptop crashes a lot otherwise, not sure if this is the best fix :p
-    services.auto-cpufreq.enable = true;
-    services.auto-cpufreq.settings = {
-      battery = {
-        turbo = "never";
-      };
-      charger = {
-        turbo = "never";
-      };
-    };
-
-    services.flatpak.enable = true;
-
-    programs.firefox.enable = true;
-
-    environment = {
-      systemPackages = [
-        # required apps for system usage
-        pkgs.wget
-        pkgs.git
-        pkgs.alacritty
-        # i/o stuffs
-        pkgs.playerctl
-        pkgs.bluetui
-        pkgs.wiremix
-      ];
-      variables = {
-        VISUAL = "hx";
-      };
-    };
-
-    # This value determines the NixOS release from which the default
-    # settings for stateful data, like file locations and database versions
-    # on your system were taken. It‘s perfectly fine and recommended to leave
-    # this value at the release version of the first install of this system.
-    # Before changing this value read the documentation for this option
-    # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-    system.stateVersion = "25.11"; # Did you read the comment?
   };
 }
