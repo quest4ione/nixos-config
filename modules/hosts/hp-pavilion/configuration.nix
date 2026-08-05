@@ -10,6 +10,7 @@
       self.nixosModules.helix
       self.nixosModules.printing
       self.nixosModules.docker
+      self.nixosModules.nix-ld
 
       self.nixosModules.niri
 
