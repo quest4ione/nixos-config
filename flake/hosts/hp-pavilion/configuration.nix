@@ -5,7 +5,6 @@
       self.nixosModules.grub
       self.nixosModules.steam
       self.nixosModules.locale
-      self.nixosModules.hyprland
       self.nixosModules.capsEsc
       self.nixosModules.helix
       self.nixosModules.printing
@@ -24,8 +23,6 @@
         };
       }
     ];
-
-    services.desktopManager.plasma6.enable = true;
 
     networking.hostName = "hp-pavilion";
     nix.settings.experimental-features = [ "nix-command" "flakes" ];
