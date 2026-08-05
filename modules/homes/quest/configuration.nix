@@ -2,6 +2,7 @@
   flake.homeModules.questConfiguration = { pkgs, ... }: {
     imports = [
       self.homeModules.helix
+      self.homeModules.zellij
     ];
 
     home = {

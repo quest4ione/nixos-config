@@ -9,7 +9,7 @@
     services.upower.enable = true;
   };
 
-  perSystem = { pkgs, lib, self', ... }: {
+  perSystem = { self', pkgs, lib, ... }: {
     packages.niri = inputs.wrapper-modules.wrappers.niri.wrap (
       let
           qs = lib.getExe pkgs.noctalia-qs;
@@ -33,7 +33,7 @@
                 "launcher"
                 "toggle"
             ];
-            "Mod+N".spawn = lib.getExe pkgs.alacritty;
+            "Mod+N".spawn = lib.getExe self'.packages.alacritty;
             "Mod+B".spawn = lib.getExe pkgs.firefox;
           };
         };
