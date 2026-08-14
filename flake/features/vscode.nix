@@ -1,5 +1,8 @@
 { ... }: {
-  flake.homeModules.vscode = { ... }: {
-    programs.vscode.enable = true;
+  flake.homeModules.vscode = { pkgs, ... }: {
+    programs.vscode = {
+      enable = true;
+      package = pkgs.vscode.fhs;
+    };
   };
 }
