@@ -16,6 +16,7 @@
       self.homeModules.osu-lazer
       self.homeModules.libre-office
       self.homeModules.vscode
+      self.homeModules.git
     ];
   };
 }
