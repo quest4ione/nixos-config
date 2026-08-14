@@ -9,7 +9,7 @@
         };
 
         terminal = {
-          shell = { program = lib.getExe self'.packages.zellij; };
+          # shell = { program = lib.getExe self'.packages.zellij; };
         };
       };
     };

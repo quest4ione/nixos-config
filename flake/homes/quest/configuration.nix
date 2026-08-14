@@ -10,7 +10,7 @@
       self.homeModules.common
 
       self.homeModules.helix
-      self.homeModules.zellij
+      # self.homeModules.zellij
       self.homeModules.discord
       self.homeModules.prism-launcher
       self.homeModules.osu-lazer
